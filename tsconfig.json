@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+ 
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
@@ -17,6 +18,6 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": false,
-    "strict": true,
+    "strict": true
   }
 }

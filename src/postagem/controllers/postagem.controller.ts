@@ -4,7 +4,7 @@ import { PostagemService } from "../services/postagem.service";
 
 @Controller("/postagens")
 export class PostagemController {
-     constructor(private readonly postagemService: PostagemService) { }
+     constructor(private readonly postagemService: PostagemService) {}
 
      @Get()
      @HttpCode(HttpStatus.OK)
