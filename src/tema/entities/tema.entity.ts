@@ -6,7 +6,7 @@ import { Postagem } from "src/postagem/entities/postagem.entity";
 export class Tema {
 
      @PrimaryGeneratedColumn()
-     id: number;
+     id: number
 
      @IsNotEmpty()
      @Column({length: 255, nullable: false})
