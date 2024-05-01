@@ -7,7 +7,8 @@ import { AppModule } from '../src/app.module';
 describe('Testes dos Módulos Usuário e Auth (e2e)', () => {
   
   let token: any;
-  let usuarioId: any;
+  let descricao: any;
+  let temaId: any;
   let app: INestApplication;
 
   beforeAll(async () => {
@@ -32,7 +33,7 @@ describe('Testes dos Módulos Usuário e Auth (e2e)', () => {
     await app.close();
   });
 
-  it('01 - Deve Cadastrar Usuario', async () => {
+  it('00 - Cadastrando usuario para testes', async () => {
     const resposta = await request(app.getHttpServer())
       .post('/usuarios/cadastrar')
       .send({
@@ -42,11 +43,9 @@ describe('Testes dos Módulos Usuário e Auth (e2e)', () => {
         foto: ' '
       });
     expect(201)
-
-    usuarioId = resposta.body.id;
   })
 
-  it('02 - Deve Autenticar Usuario (Login)', async () => {
+  it('00 - Autenticando Usuario (Login) para testes', async () => {
     const resposta = await request(app.getHttpServer())
       .post('/usuarios/logar')
       .send({
@@ -58,57 +57,66 @@ describe('Testes dos Módulos Usuário e Auth (e2e)', () => {
     token = resposta.body.token;
   })
 
-  it('03 - Não Deve Duplicar o Usuario', async () => {
-    return request(app.getHttpServer())
-      .post('/usuarios/cadastrar')
-      .send({
-        nome: 'Henrique',
-        usuario: 'root@root.com',
-        senha: 'rootroot',
-        foto: ' '
-      })
-      .expect(400)
-  })
-  
-  it('04 - Deve Listar Todos os Usuarios', async () => {
-    return request(app.getHttpServer())
-      .get('/usuarios/all')
-      .set('Authorization', `${token}`)
-      .send({})
-      .expect(200)
-  })
-
-  it('05 - Deve Listar um Usuario por ID', async () => {
-    return request(app.getHttpServer())
-      .get(`/usuarios/${usuarioId}`)
-      .set('Authorization', `${token}`)
-      .send({})
-      .expect(200)
-  })
-
-  it('06 - Deve Atualizar um Usuario', async () => {
-    return request(app.getHttpServer())
-      .put('/usuarios/atualizar')
+  it('01 - Deve Cadastrar um Tema', async () => {
+    const resposta = await request(app.getHttpServer())
+      .post('/temas')
       .set('Authorization', `${token}`)
       .send({
-        id: usuarioId,
-        nome: 'Henrique Dev',
-        usuario: 'root@root.com',
-        senha: 'rootroot',
-        foto: ' '
-      })
-      .expect(200)
-      .then(resposta => {
-        expect("Henrique Dev").toEqual(resposta.body.nome)
-      })
+        descricao: 'descrição qualquer'
+      });
+    expect(201)
+
+    descricao = resposta.body.descricao
+    temaId = resposta.body.id
+
   })
 
-  it('07 - Deve Listar Todos os Temas', async () => {
+  it('02 - Deve Listar Todos os Temas', async () => {
     return request(app.getHttpServer())
       .get('/temas')
       .set('Authorization', `${token}`)
       .send({})
       .expect(200)
+  })
+
+  it('03 - Deve Listar Temas por Decrição', async () => {
+    return request(app.getHttpServer())
+      .get(`/temas/descricao/${descricao}`)
+      .set('Authorization', `${token}`)
+      .send({
+        descricao: 'descrição qualquer'
+      })
+      .expect(200)
+  })
+
+  it('04 - Deve Listar Temas por ID', async () => {
+    return request(app.getHttpServer())
+      .get(`/temas/${temaId}`)
+      .set('Authorization', `${token}`)
+      .send({})
+      .expect(200)
+  })
+
+  it('05 - Deve Atualizar um Tema', async () => {
+    return request(app.getHttpServer())
+      .put('/temas')
+      .set('Authorization', `${token}`)
+      .send({
+        id: 1,
+        descricao: "tema 1 - atualizado"
+      })
+      .expect(200)
+      .then(resposta => {
+        expect("tema 1 - atualizado").toEqual(resposta.body.descricao)
+      })
+  })
+
+  it('06 - Deve Apagar um Tema', async () => {
+    return request(app.getHttpServer())
+      .delete(`/temas/${temaId}`)
+      .set('Authorization', `${token}`)
+      .send({})
+      .expect(204)
   })
 
 });
