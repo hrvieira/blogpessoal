@@ -61,7 +61,7 @@ export class TemaService {
 
      async delete(id: number): Promise<DeleteResult>{
 
-          let buscaTema = await this.findById(id);
+          let buscaTema: Tema = await this.findById(id);
 
           if(!buscaTema)
                throw new HttpException('Tema não foi encontrado!', HttpStatus.NOT_FOUND)

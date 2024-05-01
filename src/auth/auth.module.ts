@@ -1,12 +1,13 @@
 import { Module } from "@nestjs/common";
 import { Bcrypt } from "./bcrypt/bcrypt";
+import { UsuarioModule } from "../usuario/usuario.module";
 import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";
 import { jwtConstants } from "./constants/constants";
 import { AuthService } from "./services/auth.service";
 import { LocalStrategy } from "./strategy/local.strategy";
 import { AuthController } from "./controllers/auth.controller";
-import { UsuarioModule } from "../usuario/usuario.module";
+import { JwtStrategy } from "./strategy/jwt.strategy";
 
 @Module({
      imports: [
@@ -17,7 +18,7 @@ import { UsuarioModule } from "../usuario/usuario.module";
                signOptions: { expiresIn: '1h'}
           })
      ],
-     providers: [Bcrypt, AuthService, LocalStrategy, JwtModule],
+     providers: [Bcrypt, AuthService, LocalStrategy, JwtStrategy],
      controllers: [AuthController],
      exports: [Bcrypt]
 })
