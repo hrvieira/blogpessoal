@@ -7,7 +7,7 @@ import { AppModule } from '../src/app.module';
 describe('Testes dos Módulos Usuário e Auth (e2e)', () => {
   
   let token: any;
-  let descricao: any;
+  let descricao: any = "";
   let temaId: any;
   let app: INestApplication;
 
